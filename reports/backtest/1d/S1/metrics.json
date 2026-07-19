@@ -1,0 +1,18 @@
+{
+    "Total Trades": 1,
+    "Win Rate": 0.0,
+    "Profit Factor": 0.0,
+    "Max Drawdown ($)": 2063.3511279335507,
+    "Max Drawdown (%)": 2.063351127933551,
+    "Sharpe Ratio": null,
+    "Sortino Ratio": null,
+    "Expectancy": -2063.351127933557,
+    "Calmar Ratio": -30.43750000000009,
+    "Recovery Factor": -1.000000000000003,
+    "Max Consecutive Wins": 0,
+    "Max Consecutive Losses": 1,
+    "Avg Holding Period (h)": 288.0,
+    "Net PnL": -2063.351127933557,
+    "Return (%)": -2.063351127933557,
+    "Annual Return (%)": -62.803249956477636
+}

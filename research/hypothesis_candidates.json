@@ -1,0 +1,17 @@
+{
+    "metadata": {
+        "total_trades": 49,
+        "win_rate": 0.42857142857142855
+    },
+    "statistical_findings": [],
+    "fat_tail_characteristics": {
+        "avg_adx": 55.463961432502664,
+        "avg_rsi": 56.30407504481626,
+        "avg_atr_pct": 0.6880555555555554
+    },
+    "worst_loss_characteristics": {
+        "avg_adx": 46.62856043015973,
+        "avg_rsi": 56.30793843121054,
+        "avg_atr_pct": 0.2625925925925926
+    }
+}

@@ -1,0 +1,19 @@
+{
+  "train_samples": 264,
+  "class_balance_pos": 0.23106060606060605,
+  "feature_importance": {
+    "direction": 0.09003040939569473,
+    "brick_size": 0.0,
+    "ma_slope": 0.12843793630599976,
+    "market_regime": 0.13735610246658325,
+    "trend_strength": 0.08854912966489792,
+    "momentum": 0.10908427089452744,
+    "volatility": 0.12342576682567596,
+    "risk_pressure": 0.11945769935846329,
+    "reward_pressure": 0.0,
+    "signal_quality": 0.09341193735599518,
+    "sl_points": 0.11024671792984009,
+    "tp_points": 0.0,
+    "rr_ratio": 0.0
+  }
+}

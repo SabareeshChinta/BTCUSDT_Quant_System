@@ -1,0 +1,1 @@
+trade_id,entry_time,exit_time,direction,entry_price,exit_price,size,gross_pnl,net_pnl,pnl_pct,exit_reason,holding_duration_hours,entry_atr,mae,mfe,commission_paid,slippage_cost,sig_time,dollar_risk,stop_distance,r_multiple

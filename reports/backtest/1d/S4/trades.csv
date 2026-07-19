@@ -1,0 +1,2 @@
+entry_time,exit_time,direction,entry_price,exit_price,size,gross_pnl,holding_duration_hours,exit_reason,entry_atr,sig_time,dollar_risk,stop_distance,r_multiple,brick_size,partial_exit_done,mae,mfe,commission_paid,net_pnl,pnl_pct,trade_id,slippage_cost
+2022-03-25,2022-04-06,1,44013.455729999994,43148.884765,0.24247462676227108,-209.63652204786953,288.0,price_below_ema,1649.6571428571422,2022-03-24,1000.0,4124.142857142855,-0.2202038500374951,3370.3885714285707,False,-892.4557299999942,4176.384270000002,10.567327989625555,-220.2038500374951,-0.020633511279335572,0,0.0

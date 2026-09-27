@@ -4,3 +4,13 @@ __pycache__/
 .pytest_cache/
 .freebuff/
 *.log
+
+# Ignore large raw dataset parquets to stay under GitHub limits
+data/*_raw/
+data/raw/
+*.parquet
+*.joblib
+
+# Ignore IDE / local settings
+.vscode/
+.idea/

@@ -25,9 +25,16 @@ TIMEFRAMES: List[str] = ["15m", "30m", "1h", "4h", "1d", "1w"]
 
 @dataclass
 class StrategyConfig:
-    """Parameters that govern the core Renko + MA strategy."""
+    """Parameters that govern the Supertrend + RSI Momentum Strategy."""
 
-    strategy_type: str = "DoubleBrick"
+    strategy_type: str = "SupertrendRSI"
+    st_period: int = 10
+    st_mult: float = 2.5
+    rsi_period: int = 14
+    rsi_max_long: float = 75.0
+    rsi_min_short: float = 25.0
+    
+    # Legacy Renko parameters (if running Renko variant)
     atr_period: int = 20
     atr_multiplier: float = 3.0
     fast_ma_period: int = 10
@@ -41,15 +48,10 @@ class StrategyConfig:
     atr_percentile_threshold: float = 0.5
 
     def __post_init__(self) -> None:
-        if self.fast_ma_period >= self.slow_ma_period:
-            raise ValueError(
-                f"fast_ma_period ({self.fast_ma_period}) must be < "
-                f"slow_ma_period ({self.slow_ma_period})"
-            )
-        if self.atr_period < 1:
-            raise ValueError("atr_period must be >= 1")
-        if self.atr_multiplier <= 0:
-            raise ValueError("atr_multiplier must be > 0")
+        if self.st_period < 1:
+            raise ValueError("st_period must be >= 1")
+        if self.st_mult <= 0:
+            raise ValueError("st_mult must be > 0")
 
 
 # ---------------------------------------------------------------------------
@@ -60,8 +62,8 @@ class StrategyConfig:
 class RiskConfig:
     """Parameters for position sizing, stops, and transaction costs."""
 
-    stop_loss_atr_mult: float = 2.5
-    take_profit_atr_mult: float = 5.0
+    stop_loss_atr_mult: float = 2.0
+    take_profit_atr_mult: float = 4.0
     trailing_stop_atr_mult: float = 999.0
     commission_pct: float = 0.0005      # 0.05 %  (5 bps taker futures)
     slippage_pct: float = 0.0005        # 0.05 %  (5 bps)

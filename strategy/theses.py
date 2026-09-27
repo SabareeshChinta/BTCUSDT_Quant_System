@@ -176,3 +176,73 @@ class ADXRegime(BaseThesis):
         
         signal = signal.replace(0, np.nan).ffill().fillna(0)
         return _format_signals(df, signal)
+
+class SupertrendRSI(BaseThesis):
+    """
+    Trend & Momentum Hybrid: Supertrend (10, 2.5) with RSI (14) Boundary Filter.
+    - Long: Supertrend flips to Bullish while RSI <= 75.0 (not overbought).
+    - Short: Supertrend flips to Bearish while RSI >= 25.0 (not oversold).
+    """
+    def __init__(
+        self,
+        st_period: int = 10,
+        st_mult: float = 2.5,
+        rsi_period: int = 14,
+        rsi_max_long: float = 75.0,
+        rsi_min_short: float = 25.0
+    ):
+        self.st_period = st_period
+        self.st_mult = st_mult
+        self.rsi_period = rsi_period
+        self.rsi_max_long = rsi_max_long
+        self.rsi_min_short = rsi_min_short
+
+    def generate_signals(self, df: pd.DataFrame) -> pd.DataFrame:
+        # 1. Compute ATR
+        high = df['High']
+        low = df['Low']
+        close_prev = df['Close'].shift(1)
+        tr = pd.concat([high - low, (high - close_prev).abs(), (low - close_prev).abs()], axis=1).max(axis=1)
+        atr = tr.ewm(span=self.st_period, adjust=False).mean()
+        
+        # 2. Compute Supertrend
+        hl2 = (high + low) / 2.0
+        upper_band = hl2 + (self.st_mult * atr)
+        lower_band = hl2 - (self.st_mult * atr)
+        
+        close = df['Close'].values
+        ub = upper_band.values
+        lb = lower_band.values
+        n = len(df)
+        
+        st_dir = np.ones(n)
+        for i in range(1, n):
+            if close[i] > ub[i-1]:
+                st_dir[i] = 1
+            elif close[i] < lb[i-1]:
+                st_dir[i] = -1
+            else:
+                st_dir[i] = st_dir[i-1]
+                if st_dir[i] == 1 and lb[i] < lb[i-1]:
+                    lb[i] = lb[i-1]
+                if st_dir[i] == -1 and ub[i] > ub[i-1]:
+                    ub[i] = ub[i-1]
+                    
+        # 3. Compute RSI
+        delta = df['Close'].diff()
+        gain = delta.clip(lower=0).ewm(alpha=1/self.rsi_period, adjust=False).mean()
+        loss = (-delta.clip(upper=0)).ewm(alpha=1/self.rsi_period, adjust=False).mean()
+        rs = gain / (loss + 1e-10)
+        rsi = (100 - (100 / (1 + rs))).values
+        
+        # 4. Generate directional signals
+        signal = pd.Series(0, index=df.index)
+        for i in range(1, n):
+            if st_dir[i-1] == -1 and st_dir[i] == 1 and rsi[i] <= self.rsi_max_long:
+                signal.iloc[i] = 1
+            elif st_dir[i-1] == 1 and st_dir[i] == -1 and rsi[i] >= self.rsi_min_short:
+                signal.iloc[i] = -1
+                
+        signal = signal.replace(0, np.nan).ffill().fillna(0)
+        return _format_signals(df, signal)
+
